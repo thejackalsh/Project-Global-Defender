@@ -3,7 +3,7 @@ import constant as c
 from background import BG
 from ship import Ship
 from bullet import Bullet
-
+from enemy_spawner import EnemySpawner
 
 
 
@@ -51,13 +51,13 @@ bullet_group = pygame.sprite.Group()
 # Sprite group
 sprite_group = pygame.sprite.Group()
 sprite_group.add(player)
+enemy_spawner = EnemySpawner()
 
 
 
 # Set the initial speed of the player's ship to 0
 player_speed_x = 0
 player_speed_y = 0
-
 
 
 
@@ -119,12 +119,16 @@ while running:
     
     # Update the background
     bg_group.update()
+    
+    # Update the enemy
+    enemy_spawner.update()
 
     #Render display
     display.fill(black)
     bg_group.draw(display)
     bullet_group.draw(display)
     sprite_group.draw(display)
+    enemy_spawner.enemy_group.draw(display)
     pygame.display.update()
 
 
