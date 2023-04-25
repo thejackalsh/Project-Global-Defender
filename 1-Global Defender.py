@@ -84,7 +84,7 @@ while running:
             elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                 player_speed_y = 5
             elif event.key == pygame.K_SPACE:
-                bullet = Bullet(player.rect.centerx - 0.5, player.rect.top, y_offset= + 10)
+                bullet = Bullet(player.rect.centerx - 0.55, player.rect.top, y_offset= + 10)
                 bullet_group.add(bullet)
         
         elif event.type == pygame.KEYUP:
