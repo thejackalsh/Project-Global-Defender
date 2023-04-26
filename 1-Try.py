@@ -4,7 +4,7 @@ from background import BG
 from ship import Ship
 from bullet import Bullet
 from enemy_spawner import EnemySpawner
-
+from explosion_spawner import ExplosionSpawner 
 
 
 # Game name
@@ -51,7 +51,13 @@ bullet_group = pygame.sprite.Group()
 # Sprite group
 sprite_group = pygame.sprite.Group()
 sprite_group.add(player)
+
+# Enemy Spawner
 enemy_spawner = EnemySpawner()
+
+# Explosion Spawner 
+explosion_spawner= ExplosionSpawner()
+
 
 
 
@@ -59,8 +65,10 @@ enemy_spawner = EnemySpawner()
 player_speed_x = 0
 player_speed_y = 0
 
-
-
+# Music setup
+pygame.mixer.music.load('Metallica-Better-Than-You-instrumental.ogg')
+pygame.mixer.music.set_volume(.2)
+pygame.mixer.music.play(loops=True)
 
 
 # Run the game loop
@@ -116,12 +124,23 @@ while running:
 
     # Update the bullets
     bullet_group.update()
-    
+
     # Update the background
     bg_group.update()
-    
+
     # Update the enemy
     enemy_spawner.update()
+
+    # Update the explowsion 
+    explosion_spawner.update()
+
+
+    # Check collision
+    collided = pygame.sprite.groupcollide(bullet_group, enemy_spawner.enemy_group, True, False)
+    for bullet, enemy in collided.items():
+        enemy[0 ].get_hit()
+        explosion_spawner.spawn_explosion((bullet.rect.x, bullet.rect.y))  
+
 
     #Render display
     display.fill(black)
@@ -129,6 +148,7 @@ while running:
     bullet_group.draw(display)
     sprite_group.draw(display)
     enemy_spawner.enemy_group.draw(display)
+    explosion_spawner.explosion_group.draw(display)
     pygame.display.update()
 
 

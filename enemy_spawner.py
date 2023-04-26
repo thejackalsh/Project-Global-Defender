@@ -11,7 +11,7 @@ class EnemySpawner:
         self.enemy_group.update()
         if self.spawn_timer == 0:
             self.spawn_enemy()
-            self.spawn_timer = random.randrange(30, 120)
+            self.spawn_timer = random.randrange(60, 120)
         else:
             self.spawn_timer-= 1
 
