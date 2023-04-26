@@ -138,7 +138,7 @@ while running:
     # Check collision
     collided = pygame.sprite.groupcollide(bullet_group, enemy_spawner.enemy_group, True, False)
     for bullet, enemy in collided.items():
-        enemy[0 ].get_hit()
+        enemy[0].get_hit()
         explosion_spawner.spawn_explosion((bullet.rect.x, bullet.rect.y))  
 
 
