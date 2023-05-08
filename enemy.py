@@ -8,6 +8,8 @@ class Enemy(pygame.sprite.Sprite):
         super(Enemy, self).__init__()
         self.image = pygame.image.load('Alien.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (self.image.get_width()/7, self.image.get_height()/7))
+        self.is_destroyed = False
+        self.is_invincible = False
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, c.DISPLAY_WIDTH - self.rect.width)
         self.rect.y = -self.rect.height
@@ -22,10 +24,13 @@ class Enemy(pygame.sprite.Sprite):
 
 
     def get_hit(self): 
-        self.hit_sound.play()
-        self.hp -=1
-        if self.hp <= 0:
-            self.destroy()
+        if not self.is_invincible:
+            self.hit_sound.play()
+            self.hp -=1
+            if self.hp <= 0:
+                self.is_invincible = True
+                self.is_destroyed = True 
+                self.destroy()
 
 
     def destroy(self):

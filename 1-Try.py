@@ -114,8 +114,8 @@ while running:
         player.rect.right = 600
     if player.rect.top < 0:
         player.rect.top = 0        
-    elif player.rect.bottom > 700:
-        player.rect.bottom = 700
+    elif player.rect.bottom > 770:
+        player.rect.bottom = 770
 
     
 
@@ -131,7 +131,7 @@ while running:
     # Update the enemy
     enemy_spawner.update()
 
-    # Update the explowsion 
+    # Update the explosion 
     explosion_spawner.update()
 
 
@@ -140,6 +140,13 @@ while running:
     for bullet, enemy in collided.items():
         enemy[0].get_hit()
         explosion_spawner.spawn_explosion((bullet.rect.x, bullet.rect.y))  
+    collided = pygame.sprite.groupcollide(sprite_group, enemy_spawner.enemy_group, False, False)
+    for player, enemy in collided.items():
+        if not enemy[0].is_invincible:
+            player.get_hit()
+        enemy[0].hp = 0 
+        enemy[0].get_hit()
+        
 
 
     #Render display
@@ -149,6 +156,8 @@ while running:
     sprite_group.draw(display)
     enemy_spawner.enemy_group.draw(display)
     explosion_spawner.explosion_group.draw(display)
+    player.hud_group.draw(display)
+    player.hud.health_bar_group.draw(display)
     pygame.display.update()
 
 
