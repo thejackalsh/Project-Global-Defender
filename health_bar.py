@@ -7,6 +7,7 @@ class HealthBar(pygame.sprite.Sprite):
         self.max_hp = hp 
         self.hp = self.max_hp
         self.original_image = pygame.image.load('Health.png').convert()
+        self.original_image = pygame.transform.scale(self.original_image, (self.original_image.get_width()-13, self.original_image.get_height()-4))
         self.image = self.original_image
         self.max_width = self.image.get_width()
         self.rect = self.image.get_rect()

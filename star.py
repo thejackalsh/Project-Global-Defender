@@ -15,7 +15,7 @@ class Star(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x =random.randrange(0, c.DISPLAY_WIDTH)
         self.vel_x = 0
-        self.vel_y = random.randrange(3, 6)
+        self.vel_y = random.randrange(3, 5)
 
         
     def update(self):

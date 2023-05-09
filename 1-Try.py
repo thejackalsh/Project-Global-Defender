@@ -4,7 +4,7 @@ from background import BG
 from ship import Ship
 from bullet import Bullet
 from enemy_spawner import EnemySpawner
-from explosion_spawner import ExplosionSpawner 
+from particle_spawner import ParticleSpawner 
 
 
 # Game name
@@ -55,8 +55,8 @@ sprite_group.add(player)
 # Enemy Spawner
 enemy_spawner = EnemySpawner()
 
-# Explosion Spawner 
-explosion_spawner= ExplosionSpawner()
+# Particle Spawner 
+particle_spawner= ParticleSpawner()
 
 
 
@@ -131,21 +131,21 @@ while running:
     # Update the enemy
     enemy_spawner.update()
 
-    # Update the explosion 
-    explosion_spawner.update()
+    # Update the Particle
+    particle_spawner.update()
 
 
     # Check collision
     collided = pygame.sprite.groupcollide(bullet_group, enemy_spawner.enemy_group, True, False)
     for bullet, enemy in collided.items():
         enemy[0].get_hit()
-        explosion_spawner.spawn_explosion((bullet.rect.x, bullet.rect.y))  
+        particle_spawner.spawn_particle((bullet.rect.x, bullet.rect.y))  
     collided = pygame.sprite.groupcollide(sprite_group, enemy_spawner.enemy_group, False, False)
     for player, enemy in collided.items():
         if not enemy[0].is_invincible:
             player.get_hit()
         enemy[0].hp = 0 
-        enemy[0].get_hit()
+        enemy[0].get_hit() 
         
 
 
@@ -155,7 +155,7 @@ while running:
     bullet_group.draw(display)
     sprite_group.draw(display)
     enemy_spawner.enemy_group.draw(display)
-    explosion_spawner.explosion_group.draw(display)
+    particle_spawner.particle_group.draw(display)
     player.hud_group.draw(display)
     player.hud.health_bar_group.draw(display)
     pygame.display.update()
