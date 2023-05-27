@@ -12,7 +12,8 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.centery = y + y_offset
         self.rect.centerx = x
         self.speed_y = -10
-        self.bullet_sound = pygame.mixer.Sound("laser.ogg") # definisikan variabel bullet_sound di dalam kelas Bullet
+        self.bullet_sound = pygame.mixer.Sound("laser.ogg")
+        self.bullet_sound.set_volume(0.5)
         self.bullet_sound.stop()
         self.bullet_sound.play()  # play bullet sound when bullet is fired
 

@@ -7,12 +7,13 @@ from enemy_spawner import EnemySpawner
 from particle_spawner import ParticleSpawner 
 
 
+
 # Game name
 pygame.display.set_caption("Global Defender")
 
 # Initialize pygame
 pygame.init()
-
+pygame.font.init()
 
 
 # Set the dimensions of the display
@@ -27,15 +28,12 @@ black = (0, 0, 0)
 # Set the frames per second
 fps = 60
 
-
-
 #Background 
 bg = BG()
 bg_group = pygame.sprite.Group()
 
 # Add the Background instance to the sprite group
 bg_group.add(bg)
-
 
 # PLAYER PLAYER PLAYER PLAYER 
 # Create the player's ship
@@ -60,14 +58,13 @@ particle_spawner= ParticleSpawner()
 
 
 
-
 # Set the initial speed of the player's ship to 0
 player_speed_x = 0
 player_speed_y = 0
 
 # Music setup
 pygame.mixer.music.load('Metallica-Better-Than-You-instrumental.ogg')
-pygame.mixer.music.set_volume(.2)
+pygame.mixer.music.set_volume(.1)
 pygame.mixer.music.play(loops=True)
 
 
@@ -102,9 +99,11 @@ while running:
                 player_speed_y = 0
 
 
+
     # Update the player's ship position
     player.rect.x += player_speed_x
     player.rect.y += player_speed_y
+
 
 
     # Keep the player's ship within the screen boundaries
@@ -114,10 +113,11 @@ while running:
         player.rect.right = 600
     if player.rect.top < 0:
         player.rect.top = 0        
-    elif player.rect.bottom > 770:
-        player.rect.bottom = 770
+    elif player.rect.bottom > 760:
+        player.rect.bottom = 760
 
-    
+
+
 
     #Update the object 
     sprite_group.update()
@@ -135,18 +135,21 @@ while running:
     particle_spawner.update()
 
 
+
     # Check collision
     collided = pygame.sprite.groupcollide(bullet_group, enemy_spawner.enemy_group, True, False)
     for bullet, enemy in collided.items():
         enemy[0].get_hit()
-        particle_spawner.spawn_particle((bullet.rect.x, bullet.rect.y))  
+        player.hud.score.update_score(enemy[0].score_value)
+        if not enemy[0].is_invincible:
+            particle_spawner.spawn_particle((bullet.rect.x, bullet.rect.y))  
     collided = pygame.sprite.groupcollide(sprite_group, enemy_spawner.enemy_group, False, False)
     for player, enemy in collided.items():
         if not enemy[0].is_invincible:
             player.get_hit()
         enemy[0].hp = 0 
-        enemy[0].get_hit() 
-        
+        enemy[0].get_hit()         
+
 
 
     #Render display
@@ -158,6 +161,7 @@ while running:
     particle_spawner.particle_group.draw(display)
     player.hud_group.draw(display)
     player.hud.health_bar_group.draw(display)
+    player.hud.score_group.draw(display)
     pygame.display.update()
 
 

@@ -28,6 +28,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = -self.rect.height
         self.hit_sound = pygame.mixer.Sound('Metal Bat Hits Baseball.mp3')
         self.hp = 3
+        self.score_value = 100
         self.vel_x = 0
         self.vel_y = random.randrange(3,4)
         
