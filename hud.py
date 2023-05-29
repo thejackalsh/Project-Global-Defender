@@ -6,7 +6,7 @@ from score import Score
 class HUD(pygame.sprite.Sprite):
     def __init__(self, hp):
         super(HUD, self).__init__()
-        self.image = pygame.image.load('hud.png').convert_alpha()
+        self.image = pygame.image.load('Global Defender\Assets\hud.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (self.image.get_width()*2.4   , self.image.get_height()*1.7))
         self.rect = self.image.get_rect()
         self.rect.x = c.DISPLAY_WIDTH - 659

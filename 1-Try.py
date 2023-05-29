@@ -63,13 +63,19 @@ player_speed_x = 0
 player_speed_y = 0
 
 # Music setup
-pygame.mixer.music.load('Metallica-Better-Than-You-instrumental.ogg')
-pygame.mixer.music.set_volume(.1)
-pygame.mixer.music.play(loops=True)
+pygame.mixer.music.load('Global Defender\Assets\AC-DC Shoot to Thrill Instrumental.ogg')
+pygame.mixer.music.set_volume(0.1)
+pygame.mixer.music.play(loops=-1)
 
+# Load the custom font
+font_path = r"Global Defender\Assets\AGRESSIVE.otf"
+pause_font = pygame.font.Font(font_path, 20)
 
 # Run the game loop
 running = True
+paused = False  # Initialize pause state
+music_paused = False  # Initialize music pause state
+music_pos = 0  # Variable to store the music position
 while running:
     # Control the frame rate
     clock.tick(fps)
@@ -78,16 +84,15 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    #Ship Movement
+            
+        # Handle key presses
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                player_speed_x = -5
-            elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                player_speed_x = 5
-            elif event.key == pygame.K_w or event.key == pygame.K_UP:
-                player_speed_y = -5
-            elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                player_speed_y = 5
+            if event.key == pygame.K_ESCAPE:
+                paused = not paused  # Toggle pause state
+                if paused:
+                    pygame.mixer.music.pause()  # Pause the music
+                else:
+                    pygame.mixer.music.unpause()  # Resume the music
             elif event.key == pygame.K_SPACE:
                 bullet = Bullet(player.rect.centerx - 0.55, player.rect.top, y_offset= + 10)
                 bullet_group.add(bullet)
@@ -97,14 +102,34 @@ while running:
                 player_speed_x = 0
             elif event.key == pygame.K_w or event.key == pygame.K_UP or event.key == pygame.K_s or event.key == pygame.K_DOWN:
                 player_speed_y = 0
+    
+    # If the game is paused, only update the display and continue to the next iteration
+    if paused:
+        display.fill(black)
+        pause_text = pause_font.render("Game Paused", True, (255, 255, 255))
+        display.blit(pause_text, (c.DISPLAY_SIZE[0] // 2 - pause_text.get_width() // 2, c.DISPLAY_SIZE[1] // 2 - pause_text.get_height() // 2))
+        pygame.display.update()
+        continue
 
 
+
+    # Rest of the ship movement code
+    player_speed_x = 0
+    player_speed_y = 0
 
     # Update the player's ship position
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+        player_speed_x = -5
+    elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+        player_speed_x = 5
+    if keys[pygame.K_w] or keys[pygame.K_UP]:
+        player_speed_y = -5
+    elif keys[pygame.K_s] or keys[pygame.K_DOWN]:
+        player_speed_y = 5
+
     player.rect.x += player_speed_x
     player.rect.y += player_speed_y
-
-
 
     # Keep the player's ship within the screen boundaries
     if player.rect.left < 0:
@@ -153,6 +178,7 @@ while running:
 
 
     #Render display
+    # Update the game display
     display.fill(black)
     bg_group.draw(display)
     bullet_group.draw(display)

@@ -10,7 +10,7 @@ class Score(pygame.sprite.Sprite):
         self.value = 0 
         self.font_size = 18 
         self.color = (0, 0, 0)
-        font_path = r"AGRESSIVE.otf"
+        font_path = r"Global Defender\Assets\AGRESSIVE.otf"
         self.font = pygame.font.Font(font_path, self.font_size)
         
         self.x_pad = 60 

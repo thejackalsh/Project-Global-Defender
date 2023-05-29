@@ -5,7 +5,7 @@ from hud import HUD
 class Ship(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('Fighter.png')
+        self.image = pygame.image.load('Global Defender\Assets\Fighter.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (self.image.get_width()/7, self.image.get_height()/7))
         self.rect = self.image.get_rect()
         self.rect.x = c.DISPLAY_WIDTH - 339

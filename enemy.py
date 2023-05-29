@@ -6,11 +6,11 @@ import random
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
-        self.img_explosion_1 = pygame.image.load('Explosion1.png').convert_alpha()
+        self.img_explosion_1 = pygame.image.load('Global Defender\Assets\Explosion1.png').convert_alpha()
         self.img_explosion_1 = pygame.transform.scale(self.img_explosion_1, (self.img_explosion_1.get_width()/4, self.img_explosion_1.get_height()/4))
-        self.img_explosion_2 = pygame.image.load('Explosion2.png').convert_alpha()
+        self.img_explosion_2 = pygame.image.load('Global Defender\Assets\Explosion2.png').convert_alpha()
         self.img_explosion_2 = pygame.transform.scale(self.img_explosion_2, (self.img_explosion_2.get_width()/4, self.img_explosion_2.get_height()/4))
-        self.img_explosion_3 = pygame.image.load('Explosion3.png').convert_alpha()
+        self.img_explosion_3 = pygame.image.load('Global Defender\Assets\Explosion3.png').convert_alpha()
         self.img_explosion_3 = pygame.transform.scale(self.img_explosion_3, (self.img_explosion_3.get_width()/4, self.img_explosion_3.get_height()/4))
         
         self.anim_explosion = [self.img_explosion_1,
@@ -19,16 +19,26 @@ class Enemy(pygame.sprite.Sprite):
 
         self.anim_index = 0 
         self.frame_lenght = 6
-        self.image = pygame.image.load('Alien.png').convert_alpha()
+        self.image = pygame.image.load('Global Defender\Assets\Alien.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (self.image.get_width()/7, self.image.get_height()/7))
         self.is_destroyed = False
         self.is_invincible = False
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, c.DISPLAY_WIDTH - self.rect.width)
         self.rect.y = -self.rect.height
-        self.hit_sound = pygame.mixer.Sound('Metal Bat Hits Baseball.mp3')
+        self.hit_sound = pygame.mixer.Sound('Global Defender\Assets\Metal-Hit.ogg')
+        self.hit_sound.set_volume(0.5)
+        
+        #Explosive sound
+        self.destroy_sound = pygame.mixer.Sound('Global Defender\Assets\Explosion.ogg')
+        self.destroy_sound.set_volume(0.5)
+        
+        #Hp
         self.hp = 3
+        
+        #Score
         self.score_value = 100
+        
         self.vel_x = 0
         self.vel_y = random.randrange(3,4)
         
@@ -53,6 +63,7 @@ class Enemy(pygame.sprite.Sprite):
             self.hit_sound.play()
             self.hp -=1
             if self.hp <= 0:
+                self.destroy_sound.play()
                 self.is_invincible = True
                 self.is_destroyed = True 
                 self.rect.x = self.rect.x - 18
